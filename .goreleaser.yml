@@ -1,5 +1,16 @@
 builds:
-  - main: ./cmd/podcli
+  - cli: ./cmd/podcli
+    binary: podcli
+    ldflags: -s -w -X github.com/stefanprodan/podinfo/pkg/version.REVISION={{.Commit}}
+    goos:
+      - windows
+      - darwin
+      - linux
+    goarch:
+      - amd64
+    env:
+      - CGO_ENABLED=0
+  - podinfo: ./cmd/podinfo
     binary: podcli
     ldflags: -s -w -X github.com/stefanprodan/podinfo/pkg/version.REVISION={{.Commit}}
     goos:
