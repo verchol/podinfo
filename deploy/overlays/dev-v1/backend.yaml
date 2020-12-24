@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dev12
+  labels:
+    version: v5
+spec:
+ selector:
+    matchLabels:
+      app: backend
+      version: v5
+ template:
+    metadata:
+      labels:
+        app: backend
+        version: v5
+    spec:
+      containers:
+       - name : "backend"
+         env:
+          - name: PODINFO_UI_COLOR
+            value: "#c91a1a"

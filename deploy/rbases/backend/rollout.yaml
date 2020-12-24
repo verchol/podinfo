@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: rollouts-demo1
+  name: rollouts-demo2
 spec:
   replicas: 5
   strategy:
@@ -24,15 +24,15 @@ spec:
   revisionHistoryLimit: 20
   selector:
     matchLabels:
-      app: rollouts-demo
+      app: rollouts-demo2
   template:
     metadata:
       labels:
-        app: rollouts-demo
+        app: rollouts-demo2
     spec:
       containers:
       - name: backend
-        image: verchol/podinfo:3.3.1
+        image: verchol/podinfo:3.3.2
         imagePullPolicy: IfNotPresent
         ports:
         - name: http

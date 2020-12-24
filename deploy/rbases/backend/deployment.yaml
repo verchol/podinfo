@@ -4,11 +4,11 @@ metadata:
   name: backend
 spec:
   minReadySeconds: 3
-  revisionHistoryLimit: 5
+  revisionHistoryLimit: 10
   progressDeadlineSeconds: 60
   strategy:
     rollingUpdate:
-      maxUnavailable: 0
+      maxUnavailable: 2
     type: RollingUpdate
   selector:
     matchLabels:
@@ -20,6 +20,7 @@ spec:
         prometheus.io/port: "9797"
       labels:
         app: backend
+        version: v1
     spec:
       containers:
       - name: backend

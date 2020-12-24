@@ -1,0 +1,522 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    prometheus.io/port: "9797"
+    prometheus.io/scrape: "true"
+    sidecar.istio.io/status: '{"version":"e08c22464c16dcd08d4d59263d2012385a58bd5e7871a19f2ea2ef2de85ceba3","initContainers":["istio-init"],"containers":["istio-proxy"],"volumes":["istio-envoy","istio-certs"],"imagePullSecrets":null}'
+  creationTimestamp: "2020-11-12T09:25:29Z"
+  generateName: frontend-dev2-7db85855f6-
+  labels:
+    app: frontend
+    pod-template-hash: 7db85855f6
+    security.istio.io/tlsMode: istio
+  managedFields:
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:prometheus.io/port: {}
+          f:prometheus.io/scrape: {}
+        f:generateName: {}
+        f:labels:
+          .: {}
+          f:app: {}
+          f:pod-template-hash: {}
+        f:ownerReferences:
+          .: {}
+          k:{"uid":"f34d1695-5410-4a84-bdb8-903869cd1bc6"}:
+            .: {}
+            f:apiVersion: {}
+            f:blockOwnerDeletion: {}
+            f:controller: {}
+            f:kind: {}
+            f:name: {}
+            f:uid: {}
+      f:spec:
+        f:containers:
+          k:{"name":"frontend"}:
+            .: {}
+            f:command: {}
+            f:env:
+              .: {}
+              k:{"name":"PODINFO_UI_COLOR"}:
+                .: {}
+                f:name: {}
+                f:value: {}
+            f:image: {}
+            f:imagePullPolicy: {}
+            f:livenessProbe:
+              .: {}
+              f:exec:
+                .: {}
+                f:command: {}
+              f:failureThreshold: {}
+              f:initialDelaySeconds: {}
+              f:periodSeconds: {}
+              f:successThreshold: {}
+              f:timeoutSeconds: {}
+            f:name: {}
+            f:ports:
+              .: {}
+              k:{"containerPort":9797,"protocol":"TCP"}:
+                .: {}
+                f:containerPort: {}
+                f:name: {}
+                f:protocol: {}
+              k:{"containerPort":9898,"protocol":"TCP"}:
+                .: {}
+                f:containerPort: {}
+                f:name: {}
+                f:protocol: {}
+              k:{"containerPort":9999,"protocol":"TCP"}:
+                .: {}
+                f:containerPort: {}
+                f:name: {}
+                f:protocol: {}
+            f:readinessProbe:
+              .: {}
+              f:exec:
+                .: {}
+                f:command: {}
+              f:failureThreshold: {}
+              f:initialDelaySeconds: {}
+              f:periodSeconds: {}
+              f:successThreshold: {}
+              f:timeoutSeconds: {}
+            f:resources:
+              .: {}
+              f:limits:
+                .: {}
+                f:cpu: {}
+                f:memory: {}
+              f:requests:
+                .: {}
+                f:cpu: {}
+                f:memory: {}
+            f:terminationMessagePath: {}
+            f:terminationMessagePolicy: {}
+        f:dnsPolicy: {}
+        f:enableServiceLinks: {}
+        f:restartPolicy: {}
+        f:schedulerName: {}
+        f:securityContext: {}
+        f:terminationGracePeriodSeconds: {}
+    manager: kube-controller-manager
+    operation: Update
+    time: "2020-11-12T09:25:29Z"
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:status:
+        f:conditions:
+          .: {}
+          k:{"type":"PodScheduled"}:
+            .: {}
+            f:lastProbeTime: {}
+            f:lastTransitionTime: {}
+            f:message: {}
+            f:reason: {}
+            f:status: {}
+            f:type: {}
+    manager: kube-scheduler
+    operation: Update
+    time: "2020-11-12T09:25:29Z"
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:status:
+        f:conditions:
+          k:{"type":"ContainersReady"}:
+            .: {}
+            f:lastProbeTime: {}
+            f:lastTransitionTime: {}
+            f:status: {}
+            f:type: {}
+          k:{"type":"Initialized"}:
+            .: {}
+            f:lastProbeTime: {}
+            f:lastTransitionTime: {}
+            f:status: {}
+            f:type: {}
+          k:{"type":"Ready"}:
+            .: {}
+            f:lastProbeTime: {}
+            f:lastTransitionTime: {}
+            f:status: {}
+            f:type: {}
+        f:containerStatuses: {}
+        f:hostIP: {}
+        f:initContainerStatuses: {}
+        f:phase: {}
+        f:podIP: {}
+        f:podIPs:
+          .: {}
+          k:{"ip":"10.32.3.14"}:
+            .: {}
+            f:ip: {}
+        f:startTime: {}
+    manager: kubelet
+    operation: Update
+    time: "2020-11-12T09:25:47Z"
+  name: frontend-dev2-7db85855f6-zjl9w
+  namespace: default
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: ReplicaSet
+    name: frontend-dev2-7db85855f6
+    uid: f34d1695-5410-4a84-bdb8-903869cd1bc6
+  resourceVersion: "2472381"
+  selfLink: /api/v1/namespaces/default/pods/frontend-dev2-7db85855f6-zjl9w
+  uid: c9352dd7-138f-4141-b322-76969f951f71
+spec:
+  containers:
+  - command:
+    - ./podinfo
+    - --port=9898
+    - --port-metrics=9797
+    - --level=info
+    - --backend-url=http://backend:9898/echo
+    - --cache-server=cache:6379
+    env:
+    - name: PODINFO_UI_COLOR
+      value: '#34577c'
+    image: stefanprodan/podinfo:4.0.0
+    imagePullPolicy: IfNotPresent
+    livenessProbe:
+      exec:
+        command:
+        - podcli
+        - check
+        - http
+        - localhost:9898/healthz
+      failureThreshold: 3
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    name: frontend
+    ports:
+    - containerPort: 9898
+      name: http
+      protocol: TCP
+    - containerPort: 9797
+      name: http-metrics
+      protocol: TCP
+    - containerPort: 9999
+      name: grpc
+      protocol: TCP
+    readinessProbe:
+      exec:
+        command:
+        - podcli
+        - check
+        - http
+        - localhost:9898/readyz
+      failureThreshold: 3
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    resources:
+      limits:
+        cpu: "1"
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 32Mi
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: default-token-924z9
+      readOnly: true
+  - args:
+    - proxy
+    - sidecar
+    - --domain
+    - $(POD_NAMESPACE).svc.cluster.local
+    - --configPath
+    - /etc/istio/proxy
+    - --binaryPath
+    - /usr/local/bin/envoy
+    - --serviceCluster
+    - frontend.$(POD_NAMESPACE)
+    - --drainDuration
+    - 45s
+    - --parentShutdownDuration
+    - 1m0s
+    - --discoveryAddress
+    - istio-pilot.istio-system:15010
+    - --zipkinAddress
+    - zipkin.istio-system:9411
+    - --dnsRefreshRate
+    - 300s
+    - --connectTimeout
+    - 10s
+    - --proxyAdminPort
+    - "15000"
+    - --concurrency
+    - "2"
+    - --controlPlaneAuthPolicy
+    - NONE
+    - --statusPort
+    - "15020"
+    - --applicationPorts
+    - 9898,9797,9999
+    env:
+    - name: POD_NAME
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: metadata.name
+    - name: ISTIO_META_POD_PORTS
+      value: |-
+        [
+            {"name":"http","containerPort":9898,"protocol":"TCP"}
+            ,{"name":"http-metrics","containerPort":9797,"protocol":"TCP"}
+            ,{"name":"grpc","containerPort":9999,"protocol":"TCP"}
+        ]
+    - name: ISTIO_META_CLUSTER_ID
+      value: Kubernetes
+    - name: POD_NAMESPACE
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: metadata.namespace
+    - name: INSTANCE_IP
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: status.podIP
+    - name: SERVICE_ACCOUNT
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: spec.serviceAccountName
+    - name: ISTIO_META_POD_NAME
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: metadata.name
+    - name: ISTIO_META_CONFIG_NAMESPACE
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: metadata.namespace
+    - name: SDS_ENABLED
+      value: "false"
+    - name: ISTIO_META_INTERCEPTION_MODE
+      value: REDIRECT
+    - name: ISTIO_META_INCLUDE_INBOUND_PORTS
+      value: 9898,9797,9999
+    - name: ISTIO_METAJSON_ANNOTATIONS
+      value: |
+        {"prometheus.io/port":"9797","prometheus.io/scrape":"true"}
+    - name: ISTIO_METAJSON_LABELS
+      value: |
+        {"app":"frontend","pod-template-hash":"7db85855f6"}
+    - name: ISTIO_META_WORKLOAD_NAME
+      value: frontend-dev2
+    - name: ISTIO_META_OWNER
+      value: kubernetes://apis/apps/v1/namespaces/default/deployments/frontend-dev2
+    image: gke.gcr.io/istio/proxyv2:1.4.10-gke.7
+    imagePullPolicy: IfNotPresent
+    lifecycle:
+      preStop:
+        exec:
+          command:
+          - sh
+          - -c
+          - sleep 20; while [ $(netstat -plunt | grep tcp | grep -v envoy | wc -l
+            | xargs) -ne 0 ]; do sleep 1; done
+    name: istio-proxy
+    ports:
+    - containerPort: 15090
+      name: http-envoy-prom
+      protocol: TCP
+    readinessProbe:
+      failureThreshold: 30
+      httpGet:
+        path: /healthz/ready
+        port: 15020
+        scheme: HTTP
+      initialDelaySeconds: 1
+      periodSeconds: 2
+      successThreshold: 1
+      timeoutSeconds: 1
+    resources:
+      limits:
+        cpu: "2"
+        memory: 1Gi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      privileged: false
+      readOnlyRootFilesystem: true
+      runAsGroup: 1337
+      runAsNonRoot: true
+      runAsUser: 1337
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /etc/istio/proxy
+      name: istio-envoy
+    - mountPath: /etc/certs/
+      name: istio-certs
+      readOnly: true
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: default-token-924z9
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  initContainers:
+  - command:
+    - istio-iptables
+    - -p
+    - "15001"
+    - -z
+    - "15006"
+    - -u
+    - "1337"
+    - -m
+    - REDIRECT
+    - -i
+    - '*'
+    - -x
+    - ""
+    - -b
+    - '*'
+    - -d
+    - "15020"
+    image: gke.gcr.io/istio/proxyv2:1.4.10-gke.7
+    imagePullPolicy: IfNotPresent
+    name: istio-init
+    resources:
+      limits:
+        cpu: 100m
+        memory: 50Mi
+      requests:
+        cpu: 10m
+        memory: 10Mi
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        add:
+        - NET_ADMIN
+        - NET_RAW
+        drop:
+        - ALL
+      privileged: false
+      readOnlyRootFilesystem: false
+      runAsGroup: 0
+      runAsNonRoot: false
+      runAsUser: 0
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: default-token-924z9
+      readOnly: true
+  nodeName: gke-cluster-istio-default-pool-574eec0a-ppi3
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: default-token-924z9
+    secret:
+      defaultMode: 420
+      secretName: default-token-924z9
+  - emptyDir:
+      medium: Memory
+    name: istio-envoy
+  - name: istio-certs
+    secret:
+      defaultMode: 420
+      optional: true
+      secretName: istio.default
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2020-11-12T09:25:39Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2020-11-12T09:25:47Z"
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2020-11-12T09:25:47Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2020-11-12T09:25:37Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: docker://a0f037b5158e89dc1d7229ee7d8a1862006222166750992317f5e8054c374b47
+    image: stefanprodan/podinfo:4.0.0
+    imageID: docker-pullable://stefanprodan/podinfo@sha256:6015a20232ee4f510f97a7ee02c8a432df3db0b090128ffa5e91fa2819f8a994
+    lastState: {}
+    name: frontend
+    ready: true
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2020-11-12T09:25:39Z"
+  - containerID: docker://85bc352b200d3f33844453e218701e504e540b039a0813f40daffe645ae44b4a
+    image: gke.gcr.io/istio/proxyv2:1.4.10-gke.7
+    imageID: docker-pullable://gke.gcr.io/istio/proxyv2@sha256:23964729d1fa5a853bf77f76c506da16ea37547603ed91321e17523e7741f007
+    lastState: {}
+    name: istio-proxy
+    ready: true
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2020-11-12T09:25:39Z"
+  hostIP: 10.128.0.21
+  initContainerStatuses:
+  - containerID: docker://328a1d72681df0043064d0862ce80f2857af87537e96175ba04782cf2f1e5012
+    image: gke.gcr.io/istio/proxyv2:1.4.10-gke.7
+    imageID: docker-pullable://gke.gcr.io/istio/proxyv2@sha256:23964729d1fa5a853bf77f76c506da16ea37547603ed91321e17523e7741f007
+    lastState: {}
+    name: istio-init
+    ready: true
+    restartCount: 0
+    state:
+      terminated:
+        containerID: docker://328a1d72681df0043064d0862ce80f2857af87537e96175ba04782cf2f1e5012
+        exitCode: 0
+        finishedAt: "2020-11-12T09:25:38Z"
+        reason: Completed
+        startedAt: "2020-11-12T09:25:38Z"
+  phase: Running
+  podIP: 10.32.3.14
+  podIPs:
+  - ip: 10.32.3.14
+  qosClass: Burstable
+  startTime: "2020-11-12T09:25:37Z"

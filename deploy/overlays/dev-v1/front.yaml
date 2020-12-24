@@ -1,0 +1,19 @@
+# patch.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dev12
+  labels:
+    version: v5
+spec:
+ template:
+    metadata:
+      labels:
+        app: frontend
+        version: v5
+    spec:
+        containers:
+        - name : frontend
+          env:
+            - name: PODINFO_UI_COLOR
+              value: "#c91a1a"

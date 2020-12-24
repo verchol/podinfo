@@ -6,9 +6,11 @@ spec:
   minReadySeconds: 3
   revisionHistoryLimit: 5
   progressDeadlineSeconds: 60
+  replicas: 5
   strategy:
     rollingUpdate:
       maxUnavailable: 0
+      maxSurge: 100%
     type: RollingUpdate
   selector:
     matchLabels:
@@ -16,8 +18,10 @@ spec:
   template:
     metadata:
       annotations:
+        version: "7"
         prometheus.io/scrape: "true"
         prometheus.io/port: "9797"
+        canarian.io/strategy: "gradual"
       labels:
         app: backend
     spec:
